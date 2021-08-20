@@ -1,10 +1,10 @@
-const express = require('https-localhost');
-const app = express();
 const cors = require('cors');
 require('dotenv').config();
-const {CLIENT_ID, CLIENT_SECRET, EXPRESS_PORT, CLIENT_URL} = process.env,
-      SlackStrategy = require('passport-slack').Strategy,
-      passport = require('passport');
+const {CLIENT_ID, CLIENT_SECRET, EXPRESS_PORT, CLIENT_URL, NODE_ENV} = process.env,
+SlackStrategy = require('passport-slack').Strategy,
+passport = require('passport');
+const express = NODE_ENV === 'development' ? require('https-localhost') : require('express');
+const app = express();
 
 app.use(require("express-session")({
   secret: "This is the secret line",
