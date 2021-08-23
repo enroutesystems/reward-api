@@ -8,7 +8,7 @@ const app = express();
 
 app.enable('trust proxy');
 
-app.use(require("cookie-session")({ 
+app.use(require("express-session")({ 
   httpOnly: true, 
   secure: true, 
   maxAge: 1000 * 60 * 60 * 48, 
