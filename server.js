@@ -6,10 +6,10 @@ const {CLIENT_ID, CLIENT_SECRET, EXPRESS_PORT, CLIENT_URL} = process.env,
       SlackStrategy = require('passport-slack').Strategy,
       passport = require('passport');
 
-app.use(require("express-session")({
+app.use(require("cookie-session")({
+  name: 'session',
   secret: "This is the secret line",
-  resave: false,
-  saveUninitialized: false
+  maxAge: 24 * 60 * 60 * 1000
   }));
 
 app.use(passport.initialize());
@@ -52,6 +52,7 @@ app.get('/auth/slack/callback',
 
 //Main page
 app.get('/user',(req,res)=>{
+  console.log(req.user)
   res.status(200).json({
     user: req.user
   })
