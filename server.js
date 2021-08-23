@@ -6,11 +6,14 @@ passport = require('passport');
 const express = NODE_ENV === 'development' ? require('https-localhost') : require('express');
 const app = express();
 
-app.use(require("cookie-session")({
-  name: 'session',
-  secret: "This is the secret line",
-  maxAge: 24 * 60 * 60 * 1000
-  }));
+app.enable('trust proxy');
+
+app.use(require("cookie-session")({ 
+  httpOnly: true, 
+  secure: true, 
+  maxAge: 1000 * 60 * 60 * 48, 
+  sameSite: 'none' 
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
