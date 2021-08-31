@@ -1,18 +1,15 @@
 const cors = require('cors');
 require('dotenv').config();
-const port = process.env.EXPRESS_PORT || 8080;
-const {CLIENT_ID, CLIENT_SECRET, CLIENT_URL, NODE_ENV} = process.env,
+const {CLIENT_ID, CLIENT_SECRET, EXPRESS_PORT, CLIENT_URL, NODE_ENV} = process.env,
 SlackStrategy = require('passport-slack').Strategy,
 passport = require('passport');
 const express = NODE_ENV === 'development' ? require('https-localhost') : require('express');
 const app = express();
 
-app.enable('trust proxy');
-
-app.use(require("cookie-session")({
-  name: 'session',
-  keys: ['key1', 'key2'],
-  maxAge: 24 * 60 * 60 * 1000
+app.use(require("express-session")({
+  secret: "This is the secret line",
+  resave: false,
+  saveUninitialized: false
   }));
 
 app.use(passport.initialize());
@@ -55,7 +52,6 @@ app.get('/auth/slack/callback',
 
 //Main page
 app.get('/user',(req,res)=>{
-  console.log(req.user)
   res.status(200).json({
     user: req.user
   })
@@ -68,4 +64,4 @@ app.get('/logout', function(req, res){
 });
 
 // This displays message that the server running and listening to specified port
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(EXPRESS_PORT, () => console.log(`Listening on port ${EXPRESS_PORT}`));
